@@ -1,0 +1,75 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/Ball.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Enemy.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/PressStart2P-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://scenes/GUI.gd" type="Script" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 4 )
+
+[node name="Game" type="Node2D"]
+
+[node name="GUI" type="Control" parent="."]
+margin_right = 96.0
+margin_bottom = 40.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerScore" type="RichTextLabel" parent="GUI"]
+margin_left = 32.3153
+margin_top = 16.5796
+margin_right = 48.3153
+margin_bottom = 32.5796
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0.388235, 0.607843, 1, 1 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClickToStart" type="RichTextLabel" parent="GUI"]
+margin_left = 4.66968
+margin_top = 73.6606
+margin_right = 98.6697
+margin_bottom = 92.6606
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0.388235, 0.607843, 1, 1 )
+text = "Click to start!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnemyScore" type="RichTextLabel" parent="GUI"]
+margin_left = 56.5681
+margin_top = 16.7898
+margin_right = 71.5681
+margin_bottom = 31.7898
+rect_clip_content = false
+custom_fonts/normal_font = SubResource( 1 )
+custom_colors/default_color = Color( 0.85098, 0.341176, 0.388235, 1 )
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Enemy" parent="." instance=ExtResource( 3 )]
+position = Vector2( 88, 46 )
+target_ball = NodePath("../Ball")
+
+[node name="Ball" parent="." instance=ExtResource( 1 )]
+position = Vector2( 48, 48 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 8, 46 )
+[connection signal="start_game" from="GUI" to="Player" method="_on_GUI_start_game"]
+[connection signal="start_game" from="GUI" to="Enemy" method="_on_GUI_start_game"]
+[connection signal="start_game" from="GUI" to="Ball" method="_on_GUI_start_game"]
+[connection signal="enemy_scored" from="Ball" to="GUI" method="_on_Ball_enemy_scored"]
+[connection signal="player_scored" from="Ball" to="GUI" method="_on_Ball_player_scored"]
